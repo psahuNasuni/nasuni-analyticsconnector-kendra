@@ -6,7 +6,7 @@
 
 variable "layer_name" {
   type = string
-  default = "nasuni-labs-kendra-lambda-layer"
+  default = "nasuni-labs-os-lambda-layer"
 }
 variable "lambda_layer_suffix" {
   type = string
