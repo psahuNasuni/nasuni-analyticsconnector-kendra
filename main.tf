@@ -159,7 +159,7 @@ locals {
     # last-run = timestamp()
     root_handle               = data.local_file.toc.content
     discovery_source_bucket   = jsondecode(nonsensitive(data.aws_secretsmanager_secret_version.current_user_secrets.secret_string))["destination_bucket"]
-    es_url                    = jsondecode(nonsensitive(data.aws_secretsmanager_secret_version.admin_secret_kendra.secret_string))["nac_es_url"]
+    # es_url                    = jsondecode(nonsensitive(data.aws_secretsmanager_secret_version.admin_secret_kendra.secret_string))["nac_es_url"]
     nac_stack                 = "nasuni-labs-NasuniAnalyticsConnector-${random_id.nac_unique_stack_id.hex}"
     discovery_lambda_role_arn = aws_iam_role.lambda_exec_role.arn
     discovery_lambda_name     = aws_lambda_function.lambda_function.function_name
