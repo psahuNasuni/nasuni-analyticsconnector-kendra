@@ -22,10 +22,16 @@ import logging
 import ssl
 import urllib3
 def lambda_handler(event, context):
+    logging.info('lambda_handler starts...')
+    print('context.invoked_function_arn',context.invoked_function_arn)
+    logging.info("Lambda function ARN:".format(context.invoked_function_arn))
+    runtime_region = os.environ['AWS_REGION'] 
+    context_arn=context.invoked_function_arn
+    u_id=context_arn.split('-')[-1]
+    logging.info('u_id'.format(u_id))
 
     s3 = boto3.client('s3')  
     data={}
-    u_id='5230f4c3f38d'
     runtime_region = os.environ['AWS_REGION'] 
     secret_nct_nce_admin = get_secret('nasuni-labs-kendra-admin',runtime_region) 
     secret_data_internal = get_secret('nasuni-labs-internal-'+u_id,runtime_region) 
