@@ -181,6 +181,13 @@ resource "aws_iam_role" "lambda_exec_role" {
         "Service": "lambda.amazonaws.com"
       },
       "Action": "sts:AssumeRole"
+    },
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "kendra.amazonaws.com"
+        },
+     "Action": "sts:AssumeRole"
     }
   ]
 }
@@ -281,19 +288,23 @@ resource "aws_iam_role_policy_attachment" "s3_GetObject_access" {
 }
 
 ############## IAM policy for accessing Kendra Domain from a lambda ######################
-resource "aws_iam_policy" "KendraHttpPost_access" {
-  name        = "${local.resource_name_prefix}-KendraHttpPost_access_policy-${local.lambda_code_file_name_without_extension}-${random_id.nac_unique_stack_id.hex}"
+
+
+resource "aws_iam_policy" "kendra_data_load" {
+  name        = "${local.resource_name_prefix}-data_load_policy-${random_id.nac_unique_stack_id.hex}"
   path        = "/"
-  description = "IAM policy for accessing Kendra Domain from a lambda"
+  description = "IAM policy for data loading to Kendra"
 
   policy = <<EOF
 {
     "Version": "2012-10-17",
     "Statement": [
         {
+            "Sid": "VisualEditor0",
             "Effect": "Allow",
             "Action": [
-                "es:ESHttpPost"
+                "kendra:BatchPutDocument",
+                "kendra:BatchDeleteDocument"
             ],
             "Resource": "*"
         }
@@ -301,7 +312,7 @@ resource "aws_iam_policy" "KendraHttpPost_access" {
 }
 EOF
   tags = {
-    Name            = "${local.resource_name_prefix}-KendraHttpPost_access_policy-${local.lambda_code_file_name_without_extension}-${random_id.nac_unique_stack_id.hex}"
+    Name            = "${local.resource_name_prefix}-data_load_policy-${local.lambda_code_file_name_without_extension}-${random_id.nac_unique_stack_id.hex}"
     Application     = "Nasuni Analytics Connector with Kendra"
     Developer       = "Nasuni"
     PublicationType = "Nasuni Labs"
@@ -311,9 +322,8 @@ EOF
 
 resource "aws_iam_role_policy_attachment" "KendraHttpPost_access" {
   role       = aws_iam_role.lambda_exec_role.name
-  policy_arn = aws_iam_policy.KendraHttpPost_access.arn
+  policy_arn = aws_iam_policy.kendra_data_load.arn
 }
-
 ############## IAM policy for accessing Secret Manager from a lambda ######################
 resource "aws_iam_policy" "GetSecretValue_access" {
   name        = "${local.resource_name_prefix}-GetSecretValue_access_policy-${local.lambda_code_file_name_without_extension}-${random_id.nac_unique_stack_id.hex}"
