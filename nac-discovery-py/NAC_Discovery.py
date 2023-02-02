@@ -141,7 +141,7 @@ def lambda_handler(event, context):
     # index_id = '3a655609-f7ff-4d12-8521-5d2714f0db68'
     index_id=secret_nct_nce_admin['index_id']
     print('index_id',index_id)
-    role_arn=secret_data_internal['RoleArn']
+    role_arn=secret_data_internal['discovery_lambda_role_arn']
     print('RoleArn',role_arn)  
     response = client.batch_put_document(
         IndexId=index_id,
