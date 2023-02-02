@@ -406,13 +406,13 @@ resource "aws_iam_role_policy_attachment" "AmazonEC2FullAccess" {
   policy_arn = data.aws_iam_policy.AmazonEC2FullAccess.arn
 }
 
-data "aws_iam_policy" "AmazonESFullAccess" {
-  arn = "arn:aws:iam::aws:policy/AmazonESFullAccess"
+data "aws_iam_policy" "AmazonKENDRAFullAccess" {
+  arn = "arn:aws:iam::aws:policy/AmazonKendraFullAccess"
 }
 
-resource "aws_iam_role_policy_attachment" "AmazonESFullAccess" {
+resource "aws_iam_role_policy_attachment" "AmazonKENDRAFullAccess" {
   role       = aws_iam_role.lambda_exec_role.name
-  policy_arn = data.aws_iam_policy.AmazonESFullAccess.arn
+  policy_arn = data.aws_iam_policy.AmazonKENDRAFullAccess.arn
 }
 
 ################# Trigger Lambda Function on S3 Event ######################
