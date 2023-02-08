@@ -20,7 +20,7 @@ from docx import Document
 import pandas as pd
 import logging
 import ssl
-import urllib3
+import urllib3 
 def lambda_handler(event, context):
     logging.info('lambda_handler starts...')
     print('context.invoked_function_arn',context.invoked_function_arn)
@@ -104,10 +104,9 @@ def lambda_handler(event, context):
     ########################################################
     share_path_last_element=None
     list_after_index=None
-    if share_data:
+    if share_data: 
         if share_data['path'][0]!='-' and share_data['name'][0]!='-':
             for name,path in zip(share_data['name'],share_data['path']):
-                
                 if path in data['object_key']:
                     share_path_last_element=path.split('/')[-1] 
                     logging.info('148 share_path_last_element {}'.format(share_path_last_element))
@@ -142,7 +141,7 @@ def lambda_handler(event, context):
     index_id=secret_nct_nce_admin['index_id']
     print('index_id',index_id)
     role_arn=secret_data_internal['discovery_lambda_role_arn']
-    print('RoleArn',role_arn)  
+    print('RoleArn',role_arn)   
     response = client.batch_put_document(
         IndexId=index_id,
         Documents=[
@@ -157,7 +156,7 @@ def lambda_handler(event, context):
                             {
                                 'Key': '_source_uri',
                                 'Value': {
-                                    'StringValue': data['content'],
+                                    'StringValue': data['content']+' '+data['access_url'],
                                 }
                             },
                         ]
@@ -205,8 +204,8 @@ def read_translation_data(u_id):
                     # print(data_file)
             logging.info('deleting folder from s3 bucket nasuni-share-data-bucket-storage')
             # s3.delete_object(Bucket=bucket_name, Key=key)
-    print(share_data)
-    # logging.info(share_data)
+    print('share_data',share_data)
+    logging.info(share_data)
     return share_data
 
 def get_secret(secret_name,region_name):
