@@ -104,7 +104,7 @@ def lambda_handler(event, context):
     ########################################################
     share_path_last_element=None
     list_after_index=None
-    if share_data != None:
+    if share_data:
         if share_data['path'][0]!='-' and share_data['name'][0]!='-':
             for name,path in zip(share_data['name'],share_data['path']):
                 
@@ -187,7 +187,7 @@ def read_translation_data(u_id):
         key = obj['Key']
         bucket_folder_name=key
         # print('bucket_folder_name',bucket_folder_name)
-        print('key',key)  
+        # print('key',key)  
         
         if u_id in key:
             print('found',key)
@@ -205,7 +205,7 @@ def read_translation_data(u_id):
                     # print(data_file)
             logging.info('deleting folder from s3 bucket nasuni-share-data-bucket-storage')
             # s3.delete_object(Bucket=bucket_name, Key=key)
-    # print(share_data)
+    print(share_data)
     # logging.info(share_data)
     return share_data
 
