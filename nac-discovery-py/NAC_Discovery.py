@@ -21,6 +21,8 @@ import pandas as pd
 import logging
 import ssl
 import urllib3 
+import uuid
+
 def lambda_handler(event, context):
     logging.info('lambda_handler starts...')
     print('context.invoked_function_arn',context.invoked_function_arn)
@@ -141,13 +143,15 @@ def lambda_handler(event, context):
     index_id=secret_nct_nce_admin['index_id']
     print('index_id',index_id)
     role_arn=secret_data_internal['discovery_lambda_role_arn']
-    print('RoleArn',role_arn)   
+    print('RoleArn',role_arn)  
+    random_id = str(uuid.uuid4()) 
+    
     response = client.batch_put_document(
         IndexId=index_id,
         Documents=[
                     {
-                        'Id': '12121',
-                        "Title": "Amazon.com is an online retailer",
+                        'Id': random_id,
+                        "Title": str(data['file_name']),
                         'S3Path': {
                             'Bucket': data['dest_bucket'],
                             'Key': data['object_key']
