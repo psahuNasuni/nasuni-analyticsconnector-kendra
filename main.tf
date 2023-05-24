@@ -4,7 +4,40 @@
 ##  Organization  :   Nasuni - Labss   
 #########################################################
 ##branch 330
+###################################################
+data "aws_vpc_endpoint_service" "vpc-endpoint-service" {
+  service = "kendra"
+}
 
+resource "aws_vpc_endpoint_service" "vpc-endpoint-service" {
+  count               = null == data.aws_vpc_endpoint_service.vpc-endpoint-service.service_id ? 1 : 0
+  acceptance_required = true
+  tags = {
+    Name="kendra-endpoint"
+  }
+  depends_on = [
+    data.aws_vpc_endpoint_service.vpc-endpoint-service
+  ]
+}
+
+resource "aws_vpc_endpoint" "SearchES-API-vpc-endpoint" {
+  # count               = "Y" == var.use_private_ip ? 1 : 0
+  count               = "Y" == var.use_private_ip  && "" == var.vpc_endpoint_id ? 1 : 0
+  vpc_id              = var.user_vpc_id
+  service_name        = data.aws_vpc_endpoint_service.vpc-endpoint-service.service_name
+  vpc_endpoint_type   = "Interface"
+  private_dns_enabled = false
+  security_group_ids  = [var.nac_es_securitygroup_id]
+  subnet_ids          = [var.user_subnet_id]
+  tags = {
+    Name            = "${local.resource_name_prefix}-vpc_endpoint"
+    Application     = "Nasuni Analytics Connector with Elasticsearch"
+    Developer       = "Nasuni"
+    PublicationType = "Nasuni Labs"
+    Version         = "V 0.1"
+  }
+}
+###################################################################
 data "aws_lambda_layer_version" "existing" {
   #layer_name = var.layer_name
    layer_name = "${var.layer_name}-${var.nacscheduler_uid}"
