@@ -24,6 +24,13 @@ variable "user_subnet_id" {
   default = ""
 }
 
+variable "vpc_endpoint_id" {
+  default = ""
+}
+
+variable "use_private_ip" {
+  default = "Y"
+}
 
 variable "nac_scheduler_ip_addr" {
   default = ""

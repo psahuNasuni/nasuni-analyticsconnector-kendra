@@ -5,8 +5,9 @@
 #########################################################
 ##branch 330
 ###################################################
+
 data "aws_vpc_endpoint_service" "vpc-endpoint-service" {
-  service = "kendra"
+  service = "com.amazonaws.us-west-2.kendra"
 }
 
 resource "aws_vpc_endpoint_service" "vpc-endpoint-service" {
@@ -20,11 +21,10 @@ resource "aws_vpc_endpoint_service" "vpc-endpoint-service" {
   ]
 }
 
-resource "aws_vpc_endpoint" "SearchES-API-vpc-endpoint" {
-  # count               = "Y" == var.use_private_ip ? 1 : 0
+resource "aws_vpc_endpoint" "kendra-vpc-endpoint" {
   count               = "Y" == var.use_private_ip  && "" == var.vpc_endpoint_id ? 1 : 0
   vpc_id              = var.user_vpc_id
-  service_name        = data.aws_vpc_endpoint_service.vpc-endpoint-service.service_name
+  service_name        = "com.amazonaws.us-west-2.kendra"
   vpc_endpoint_type   = "Interface"
   private_dns_enabled = false
   security_group_ids  = [var.nac_es_securitygroup_id]
