@@ -7,7 +7,7 @@
 ###################################################
 
 data "aws_vpc_endpoint_service" "vpc-endpoint-service" {
-  service = "com.amazonaws.us-west-2.kendra"
+  service = "kendra"
 }
 
 resource "aws_vpc_endpoint_service" "vpc-endpoint-service" {
