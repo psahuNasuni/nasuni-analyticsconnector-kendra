@@ -29,7 +29,7 @@ variable "vpc_endpoint_id" {
 }
 
 variable "use_private_ip" {
-  default = "Y"
+  default = "N"
 }
 
 variable "nac_scheduler_ip_addr" {
